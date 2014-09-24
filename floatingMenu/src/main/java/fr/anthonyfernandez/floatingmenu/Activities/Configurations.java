@@ -25,15 +25,16 @@ import fr.anthonyfernandez.floatingmenu.R;
 public class Configurations extends Activity {
 
 	private ImageView icon;
+    private ColorPicker colorPicker;
 
-	@Override
+    @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_configurations);
 
 		icon = (ImageView)findViewById(R.id.imageView1);
 
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(Configurations.this);
+		final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(Configurations.this);
 		if(prefs.getString("ICON", "floating2").equals("floating3")){
 			icon.setImageResource(R.drawable.floating3);
 		} else if(prefs.getString("ICON", "floating2").equals("floating4")){
@@ -46,7 +47,7 @@ public class Configurations extends Activity {
 		 *
 		 * FOR THE COLOR DRAWABLE CHANGING
 		 */
-		final ColorPicker colorPicker = (ColorPicker) findViewById(R.id.picker);
+		colorPicker = (ColorPicker) findViewById(R.id.picker);
 		OpacityBar opacityBar = (OpacityBar) findViewById(R.id.opacitybar);
 		colorPicker.addOpacityBar(opacityBar);
 
@@ -65,6 +66,7 @@ public class Configurations extends Activity {
                 mDrawable.setColorFilter(new
                         PorterDuffColorFilter(colorPicker.getColor(), Mode.MULTIPLY));
                 icon.setImageDrawable(mDrawable);
+                setPreferences(mostRecentIconPreference);
             }
         });
 
@@ -77,7 +79,6 @@ public class Configurations extends Activity {
 		image1.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-
 				setPreferences("floating3");
 				icon.setImageResource(R.drawable.floating3);
 			}
@@ -119,11 +120,17 @@ public class Configurations extends Activity {
 	}
 
 
+    public String mostRecentIconPreference = "floating2";
+
 	private void setPreferences(String myIconPref)
 	{
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(Configurations.this);
 		Editor editor = prefs.edit();
 		editor.putString("ICON", myIconPref);
+        if (colorPicker != null) {
+            editor.putInt("ICONCOLOR", colorPicker.getColor());
+        }
 		editor.commit();
+        mostRecentIconPreference = myIconPref;
 	}
 }
