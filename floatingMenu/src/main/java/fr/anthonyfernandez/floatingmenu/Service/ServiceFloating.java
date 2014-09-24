@@ -75,14 +75,15 @@ public class ServiceFloating extends Service {
 		menuActivationFloater.setImageResource(R.drawable.floating2);
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String menuActivationIconChoice = prefs.getString("ICON", "floating2");
 
-		if(prefs.getString("ICON", "floating2").equals("floating3")){
+		if(menuActivationIconChoice.equals("floating3")){
 			menuActivationFloater.setImageResource(R.drawable.floating3);
-		} else if(prefs.getString("ICON", "floating2").equals("floating4")){
+		} else if(menuActivationIconChoice.equals("floating4")){
 			menuActivationFloater.setImageResource(R.drawable.floating4);
-		} else if(prefs.getString("ICON", "floating2").equals("floating5")){
+		} else if(menuActivationIconChoice.equals("floating5")){
 			menuActivationFloater.setImageResource(R.drawable.floating5);
-		} else if(prefs.getString("ICON", "floating2").equals("floating5")){
+		} else if(menuActivationIconChoice.equals("floating5")){
 			menuActivationFloater.setImageResource(R.drawable.floating2);
 		}
 
