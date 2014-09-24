@@ -34,7 +34,7 @@ public class ServiceFloating extends Service {
 	public static  int ID_NOTIFICATION = 2018;
 
 	private WindowManager windowManager;
-	private ImageView chatHead;
+	private ImageView menuActivationFloater;
 	private ListPopupWindow popupAppListWindow;
 
 	boolean mHasDoubleClicked = false;
@@ -70,20 +70,20 @@ public class ServiceFloating extends Service {
 
 		windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
 
-		chatHead = new ImageView(this);
+		menuActivationFloater = new ImageView(this);
 
-		chatHead.setImageResource(R.drawable.floating2);
+		menuActivationFloater.setImageResource(R.drawable.floating2);
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
 		if(prefs.getString("ICON", "floating2").equals("floating3")){
-			chatHead.setImageResource(R.drawable.floating3);
+			menuActivationFloater.setImageResource(R.drawable.floating3);
 		} else if(prefs.getString("ICON", "floating2").equals("floating4")){
-			chatHead.setImageResource(R.drawable.floating4);
+			menuActivationFloater.setImageResource(R.drawable.floating4);
 		} else if(prefs.getString("ICON", "floating2").equals("floating5")){
-			chatHead.setImageResource(R.drawable.floating5);
+			menuActivationFloater.setImageResource(R.drawable.floating5);
 		} else if(prefs.getString("ICON", "floating2").equals("floating5")){
-			chatHead.setImageResource(R.drawable.floating2);
+			menuActivationFloater.setImageResource(R.drawable.floating2);
 		}
 
 		final WindowManager.LayoutParams params = new WindowManager.LayoutParams(
@@ -98,64 +98,64 @@ public class ServiceFloating extends Service {
 		params.x = 0;
 		params.y = 100;
 
-		windowManager.addView(chatHead, params);
+		windowManager.addView(menuActivationFloater, params);
 
 		try {
-			chatHead.setOnTouchListener(new View.OnTouchListener() {
-				private WindowManager.LayoutParams paramsF = params;
-				private int initialX;
-				private int initialY;
-				private float initialTouchX;
-				private float initialTouchY;
+			menuActivationFloater.setOnTouchListener(new View.OnTouchListener() {
+                private WindowManager.LayoutParams paramsF = params;
+                private int initialX;
+                private int initialY;
+                private float initialTouchX;
+                private float initialTouchY;
 
-				@Override public boolean onTouch(View v, MotionEvent event) {
-					switch (event.getAction()) {
-					case MotionEvent.ACTION_DOWN:
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    switch (event.getAction()) {
+                        case MotionEvent.ACTION_DOWN:
 
-						// Get current time in nano seconds.
-						long pressTime = System.currentTimeMillis();
+                            // Get current time in nano seconds.
+                            long pressTime = System.currentTimeMillis();
 
-						// If double click...
-						if (pressTime - lastPressTime <= 300) {
-							createNotification();
-							ServiceFloating.this.stopSelf();
-							mHasDoubleClicked = true;
-						}
-						else {     // If not double click....
-							mHasDoubleClicked = false;
-						}
-						lastPressTime = pressTime;
-						initialX = paramsF.x;
-						initialY = paramsF.y;
-						initialTouchX = event.getRawX();
-						initialTouchY = event.getRawY();
-						break;
-					case MotionEvent.ACTION_UP:
-						break;
-					case MotionEvent.ACTION_MOVE:
-						paramsF.x = initialX + (int) (event.getRawX() - initialTouchX);
-						paramsF.y = initialY + (int) (event.getRawY() - initialTouchY);
-						windowManager.updateViewLayout(chatHead, paramsF);
-						break;
-					}
-					return false;
-				}
-			});
+                            // If double click...
+                            if (pressTime - lastPressTime <= 300) {
+                                createNotification();
+                                ServiceFloating.this.stopSelf();
+                                mHasDoubleClicked = true;
+                            } else {     // If not double click....
+                                mHasDoubleClicked = false;
+                            }
+                            lastPressTime = pressTime;
+                            initialX = paramsF.x;
+                            initialY = paramsF.y;
+                            initialTouchX = event.getRawX();
+                            initialTouchY = event.getRawY();
+                            break;
+                        case MotionEvent.ACTION_UP:
+                            break;
+                        case MotionEvent.ACTION_MOVE:
+                            paramsF.x = initialX + (int) (event.getRawX() - initialTouchX);
+                            paramsF.y = initialY + (int) (event.getRawY() - initialTouchY);
+                            windowManager.updateViewLayout(menuActivationFloater, paramsF);
+                            break;
+                    }
+                    return false;
+                }
+            });
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
 
-		chatHead.setOnClickListener(new View.OnClickListener() {
+		menuActivationFloater.setOnClickListener(new View.OnClickListener() {
 
-			@Override
-			public void onClick(View arg0) {
-				initiatePopupWindow(chatHead);
-				_enable = false;
-				//				Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-				//				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-				//				getApplicationContext().startActivity(intent);
-			}
-		});
+            @Override
+            public void onClick(View arg0) {
+                initiatePopupWindow(menuActivationFloater);
+                _enable = false;
+                //				Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                //				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                //				getApplicationContext().startActivity(intent);
+            }
+        });
 	}
 
 
@@ -209,6 +209,6 @@ public class ServiceFloating extends Service {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		if (chatHead != null) windowManager.removeView(chatHead);
+		if (menuActivationFloater != null) windowManager.removeView(menuActivationFloater);
 	}
 }
