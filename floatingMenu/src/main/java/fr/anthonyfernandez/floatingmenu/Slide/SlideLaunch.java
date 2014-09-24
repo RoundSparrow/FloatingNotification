@@ -19,7 +19,7 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 
 public class SlideLaunch extends FragmentActivity {
-	
+
 	private PagerAdapter mPagerAdapter;
 	private Handler handler = new Handler()
     {
@@ -34,7 +34,7 @@ public class SlideLaunch extends FragmentActivity {
     @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         if(!prefs.getBoolean("first_time", false))
         {
@@ -43,7 +43,7 @@ public class SlideLaunch extends FragmentActivity {
             editor.commit();
             setContentView(R.layout.activity_launch);
 
-    		// Création de la liste de Fragments que fera défiler le PagerAdapter
+    		// CrÃ©ation de la liste de Fragments que fera dÃ©filer le PagerAdapter
     		List fragments = new Vector();
 
     		// Ajout des Fragments dans la liste
@@ -51,7 +51,7 @@ public class SlideLaunch extends FragmentActivity {
     		fragments.add(Fragment.instantiate(this,SpanTwo.class.getName()));
     		fragments.add(Fragment.instantiate(this,SpanThree.class.getName()));
 
-    		// Création de l'adapter qui s'occupera de l'affichage de la liste de
+    		// CrÃ©ation de l'adapter qui s'occupera de l'affichage de la liste de
     		// Fragments
     		this.mPagerAdapter = new InitPagerAdapter(super.getSupportFragmentManager(), fragments);
 

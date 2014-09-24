@@ -8,10 +8,10 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 public class InitPagerAdapter extends FragmentPagerAdapter {
-	
+
 	private final List fragments;
 
-	//On fournit à l'adapter la liste des fragments à afficher
+	//On fournit Ã  l'adapter la liste des fragments Ã  afficher
 	public InitPagerAdapter(FragmentManager fm, List fragments) {
 		super(fm);
 		this.fragments = fragments;

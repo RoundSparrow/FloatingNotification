@@ -12,6 +12,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.PixelFormat;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
+import android.graphics.drawable.Drawable;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.view.Display;
@@ -86,6 +89,16 @@ public class ServiceFloating extends Service {
 		} else if(menuActivationIconChoice.equals("floating5")){
 			menuActivationFloater.setImageResource(R.drawable.floating2);
 		}
+
+        int menuActivationIconColorFilter = prefs.getInt("ICONCOLOR", 0);
+        // Var should only be in preferences if the user adjusted it
+        if (prefs.contains("ICONCOLOR"))
+        {
+            Drawable mDrawable = menuActivationFloater.getDrawable();
+            mDrawable.setColorFilter(new
+                    PorterDuffColorFilter(menuActivationIconColorFilter, PorterDuff.Mode.MULTIPLY));
+            menuActivationFloater.setImageDrawable(mDrawable);
+        }
 
 		final WindowManager.LayoutParams params = new WindowManager.LayoutParams(
 				WindowManager.LayoutParams.WRAP_CONTENT,
