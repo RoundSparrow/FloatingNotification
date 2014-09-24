@@ -5,6 +5,11 @@
     android:versionName="3.0.2" >
     <!-- note on version: Play Store had 3.0.1 when the GitHub had only 3.0" -->
 
+    <!-- Additions and improvements beyond fork of version 3.0:
+      (c) Copyright 2014 Stephen A. Gutknecht
+      All Rights Reserved
+      -->
+
     <uses-sdk
         android:minSdkVersion="11"
         android:targetSdkVersion="19" />
