@@ -23,7 +23,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.ListPopupWindow;
-import android.widget.PopupWindow;
+
 import fr.anthonyfernandez.floatingmenu.R;
 import fr.anthonyfernandez.floatingmenu.Adapter.CustomAdapter;
 import fr.anthonyfernandez.floatingmenu.Manager.PInfo;
@@ -35,7 +35,7 @@ public class ServiceFloating extends Service {
 
 	private WindowManager windowManager;
 	private ImageView chatHead;
-	private PopupWindow pwindo;
+	private ListPopupWindow popupAppListWindow;
 
 	boolean mHasDoubleClicked = false;
 	long lastPressTime;
@@ -54,8 +54,6 @@ public class ServiceFloating extends Service {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
 		RetrievePackages getInstalledPackages = new RetrievePackages(getApplicationContext());
 		appProcessInfoArrayList = getInstalledPackages.getInstalledApps(false);
@@ -76,6 +74,8 @@ public class ServiceFloating extends Service {
 
 		chatHead.setImageResource(R.drawable.floating2);
 
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
 		if(prefs.getString("ICON", "floating2").equals("floating3")){
 			chatHead.setImageResource(R.drawable.floating3);
 		} else if(prefs.getString("ICON", "floating2").equals("floating4")){
@@ -93,6 +93,7 @@ public class ServiceFloating extends Service {
 				WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
 				PixelFormat.TRANSLUCENT);
 
+        // ToDo: Use Gravity.start to account for right and left oriented screens
 		params.gravity = Gravity.TOP | Gravity.LEFT;
 		params.x = 0;
 		params.y = 100;
@@ -155,38 +156,37 @@ public class ServiceFloating extends Service {
 				//				getApplicationContext().startActivity(intent);
 			}
 		});
-
 	}
 
 
 	private void initiatePopupWindow(View anchor) {
 		try {
 			Display display = ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
-			ListPopupWindow popup = new ListPopupWindow(this);
-			popup.setAnchorView(anchor);
-			popup.setWidth((int) (display.getWidth()/(1.5)));
+			popupAppListWindow = new ListPopupWindow(this);
+			popupAppListWindow.setAnchorView(anchor);
+			popupAppListWindow.setWidth((int) (display.getWidth() / (1.5)));
 			//ArrayAdapter<String> arrayAdapter =
 			//new ArrayAdapter<String>(this,R.layout.list_item, myArray);
-			popup.setAdapter(new CustomAdapter(getApplicationContext(), R.layout.row, appList));
-			popup.setOnItemClickListener(new OnItemClickListener() {
+			popupAppListWindow.setAdapter(new CustomAdapter(getApplicationContext(), R.layout.row, appList));
+			popupAppListWindow.setOnItemClickListener(new OnItemClickListener() {
 
-				@Override
-				public void onItemClick(AdapterView<?> arg0, View view, int position, long id3) {
-					//Log.w("tag", "package : "+apps.get(position).pname.toString());
-					Intent i;
-					PackageManager manager = getPackageManager();
-					try {
-						i = manager.getLaunchIntentForPackage(appProcessInfoArrayList.get(position).pname.toString());
-						if (i == null)
-							throw new PackageManager.NameNotFoundException();
-						i.addCategory(Intent.CATEGORY_LAUNCHER);
-						startActivity(i);
-					} catch (PackageManager.NameNotFoundException e) {
+                @Override
+                public void onItemClick(AdapterView<?> arg0, View view, int position, long id3) {
+                    //Log.w("tag", "package : "+apps.get(position).pname.toString());
+                    Intent i;
+                    PackageManager manager = getPackageManager();
+                    try {
+                        i = manager.getLaunchIntentForPackage(appProcessInfoArrayList.get(position).pname.toString());
+                        if (i == null)
+                            throw new PackageManager.NameNotFoundException();
+                        i.addCategory(Intent.CATEGORY_LAUNCHER);
+                        startActivity(i);
+                    } catch (PackageManager.NameNotFoundException e) {
 
-					}
-				}
-			});
-			popup.show();
+                    }
+                }
+            });
+			popupAppListWindow.show();
 
 		} catch (Exception e) {
 			e.printStackTrace();
