@@ -46,26 +46,27 @@ public class Configurations extends Activity {
 		 *
 		 * FOR THE COLOR DRAWABLE CHANGING
 		 */
-		final ColorPicker picker = (ColorPicker) findViewById(R.id.picker);
+		final ColorPicker colorPicker = (ColorPicker) findViewById(R.id.picker);
 		OpacityBar opacityBar = (OpacityBar) findViewById(R.id.opacitybar);
-		picker.addOpacityBar(opacityBar);
+		colorPicker.addOpacityBar(opacityBar);
 
 		//To get the color
-		picker.getColor();
+		colorPicker.getColor();
 
 		//To set the old selected color u can do it like this
-		picker.setOldCenterColor(picker.getColor());
+		colorPicker.setOldCenterColor(colorPicker.getColor());
+
 		// adds listener to the colorpicker which is implemented
-		//in the activity
-		picker.setOnColorChangedListener(new OnColorChangedListener() {
-			@Override
-			public void onColorChanged(int color) {
-				Drawable mDrawable = icon.getDrawable();
-				mDrawable.setColorFilter(new
-						PorterDuffColorFilter(picker.getColor(), Mode.MULTIPLY));
-				icon.setImageDrawable(mDrawable);
-			}
-		});
+		// in the activity
+		colorPicker.setOnColorChangedListener(new OnColorChangedListener() {
+            @Override
+            public void onColorChanged(int color) {
+                Drawable mDrawable = icon.getDrawable();
+                mDrawable.setColorFilter(new
+                        PorterDuffColorFilter(colorPicker.getColor(), Mode.MULTIPLY));
+                icon.setImageDrawable(mDrawable);
+            }
+        });
 
 		/*
 		 *

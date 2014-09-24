@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:text="Hint  \nDouble tap on icon launcher to hide it \n Click the notification to restart launcher"
+        android:text="Usage Hint  \nDouble tap on icon launcher to hide it \n Click the notification to restart launcher"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="#eeecec"
         android:textSize="14sp" />
