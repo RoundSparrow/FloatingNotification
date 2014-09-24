@@ -1,24 +1,15 @@
 package fr.anthonyfernandez.floatingmenu.Activities;
 
 import fr.anthonyfernandez.floatingmenu.R;
-import fr.anthonyfernandez.floatingmenu.R.id;
-import fr.anthonyfernandez.floatingmenu.R.layout;
 import fr.anthonyfernandez.floatingmenu.Service.ServiceFloating;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Activity;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Intent;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.PopupWindow;
 
 public class MainActivity extends Activity {
 
@@ -33,7 +24,7 @@ public class MainActivity extends Activity {
 			startService(new Intent(MainActivity.this, ServiceFloating.class));
 		}
 
-		Button launch = (Button)findViewById(R.id.button1);
+		Button launch = (Button)findViewById(R.id.buttonStartService);
 		launch.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -42,7 +33,7 @@ public class MainActivity extends Activity {
 			}
 		});
 
-		Button stop = (Button)findViewById(R.id.button2);
+		Button stop = (Button)findViewById(R.id.buttonStopService);
 		stop.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -62,10 +53,10 @@ public class MainActivity extends Activity {
 				startActivity(i);
 			}
 		});
-		
+
 		Button config = (Button)findViewById(R.id.button_config);
 		config.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View arg0) {
 				Intent intent = new Intent(MainActivity.this, Configurations.class);
