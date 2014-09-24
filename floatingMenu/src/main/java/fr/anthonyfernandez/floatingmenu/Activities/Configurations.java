@@ -43,7 +43,7 @@ public class Configurations extends Activity {
 		}
 
 		/*
-		 * 
+		 *
 		 * FOR THE COLOR DRAWABLE CHANGING
 		 */
 		final ColorPicker picker = (ColorPicker) findViewById(R.id.picker);
@@ -60,15 +60,15 @@ public class Configurations extends Activity {
 		picker.setOnColorChangedListener(new OnColorChangedListener() {
 			@Override
 			public void onColorChanged(int color) {
-				Drawable mDrawable = icon.getDrawable(); 
-				mDrawable.setColorFilter(new 
-						PorterDuffColorFilter(picker.getColor(),Mode.MULTIPLY));
+				Drawable mDrawable = icon.getDrawable();
+				mDrawable.setColorFilter(new
+						PorterDuffColorFilter(picker.getColor(), Mode.MULTIPLY));
 				icon.setImageDrawable(mDrawable);
 			}
 		});
 
 		/*
-		 * 
+		 *
 		 * FOR THE ICON CHANGING
 		 */
 
@@ -76,7 +76,7 @@ public class Configurations extends Activity {
 		image1.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				
+
 				setPreferences("floating3");
 				icon.setImageResource(R.drawable.floating3);
 			}
@@ -117,12 +117,6 @@ public class Configurations extends Activity {
 		});
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.configurations, menu);
-		return true;
-	}
 
 	private void setPreferences(String myIconPref)
 	{
