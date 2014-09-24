@@ -41,9 +41,9 @@ public class ServiceFloating extends Service {
 	long lastPressTime;
 	private Boolean _enable = true;
 
-	ArrayList<String> myArray;
-	ArrayList<PInfo> apps;
-	List listCity;
+	ArrayList<String> appNameArrayList;
+	ArrayList<PInfo> appProcessInfoArrayList;
+	List appList;
 
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -51,31 +51,31 @@ public class ServiceFloating extends Service {
 		return null;
 	}
 
-	@Override 
+	@Override
 	public void onCreate() {
 		super.onCreate();
-		
+
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
 		RetrievePackages getInstalledPackages = new RetrievePackages(getApplicationContext());
-		apps = getInstalledPackages.getInstalledApps(false);
-		myArray = new ArrayList<String>();
+		appProcessInfoArrayList = getInstalledPackages.getInstalledApps(false);
+		appNameArrayList = new ArrayList<String>();
 
-		for(int i=0 ; i<apps.size() ; ++i) {
-			myArray.add(apps.get(i).appname);
+		for(int i=0 ; i< appProcessInfoArrayList.size() ; ++i) {
+			appNameArrayList.add(appProcessInfoArrayList.get(i).appname);
 		}
 
-		listCity = new ArrayList();
-		for(int i=0 ; i<apps.size() ; ++i) {
-			listCity.add(apps.get(i));
+		appList = new ArrayList();
+		for(int i=0 ; i< appProcessInfoArrayList.size() ; ++i) {
+			appList.add(appProcessInfoArrayList.get(i));
 		}
 
 		windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
 
 		chatHead = new ImageView(this);
-		
+
 		chatHead.setImageResource(R.drawable.floating2);
-		
+
 		if(prefs.getString("ICON", "floating2").equals("floating3")){
 			chatHead.setImageResource(R.drawable.floating3);
 		} else if(prefs.getString("ICON", "floating2").equals("floating4")){
@@ -114,7 +114,6 @@ public class ServiceFloating extends Service {
 						// Get current time in nano seconds.
 						long pressTime = System.currentTimeMillis();
 
-
 						// If double click...
 						if (pressTime - lastPressTime <= 300) {
 							createNotification();
@@ -124,7 +123,7 @@ public class ServiceFloating extends Service {
 						else {     // If not double click....
 							mHasDoubleClicked = false;
 						}
-						lastPressTime = pressTime; 
+						lastPressTime = pressTime;
 						initialX = paramsF.x;
 						initialY = paramsF.y;
 						initialTouchX = event.getRawX();
@@ -166,9 +165,9 @@ public class ServiceFloating extends Service {
 			ListPopupWindow popup = new ListPopupWindow(this);
 			popup.setAnchorView(anchor);
 			popup.setWidth((int) (display.getWidth()/(1.5)));
-			//ArrayAdapter<String> arrayAdapter = 
+			//ArrayAdapter<String> arrayAdapter =
 			//new ArrayAdapter<String>(this,R.layout.list_item, myArray);
-			popup.setAdapter(new CustomAdapter(getApplicationContext(), R.layout.row, listCity));
+			popup.setAdapter(new CustomAdapter(getApplicationContext(), R.layout.row, appList));
 			popup.setOnItemClickListener(new OnItemClickListener() {
 
 				@Override
@@ -177,7 +176,7 @@ public class ServiceFloating extends Service {
 					Intent i;
 					PackageManager manager = getPackageManager();
 					try {
-						i = manager.getLaunchIntentForPackage(apps.get(position).pname.toString());
+						i = manager.getLaunchIntentForPackage(appProcessInfoArrayList.get(position).pname.toString());
 						if (i == null)
 							throw new PackageManager.NameNotFoundException();
 						i.addCategory(Intent.CATEGORY_LAUNCHER);
@@ -198,8 +197,8 @@ public class ServiceFloating extends Service {
 		Intent notificationIntent = new Intent(getApplicationContext(), ServiceFloating.class);
 		PendingIntent pendingIntent = PendingIntent.getService(getApplicationContext(), 0, notificationIntent, 0);
 
-		Notification notification = new Notification(R.drawable.floating2, "Click to start launcher",System.currentTimeMillis());
-		notification.setLatestEventInfo(getApplicationContext(), "Start launcher" ,  "Click to start launcher", pendingIntent);
+		Notification notification = new Notification(R.drawable.floating2, "Click to start launcher", System.currentTimeMillis());
+		notification.setLatestEventInfo(getApplicationContext(), "Start launcher", "Click to start launcher", pendingIntent);
 		notification.flags = Notification.FLAG_AUTO_CANCEL | Notification.FLAG_ONGOING_EVENT;
 
 		NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
@@ -212,5 +211,4 @@ public class ServiceFloating extends Service {
 		super.onDestroy();
 		if (chatHead != null) windowManager.removeView(chatHead);
 	}
-
 }
